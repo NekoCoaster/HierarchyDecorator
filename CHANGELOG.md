@@ -1,3 +1,14 @@
+## 0.13.0 - Neko's Fork
+
+- Use `===`, `---`, and `+++` as the default header prefixes. A one-time migration upgrades original built-in prefixes in saved settings while preserving custom and regex styles and visual settings.
+- Add hierarchy context-menu commands to create headers, subheaders, and mini headers with Undo and the configured style prefixes.
+
+- Support component-name icon associations, project-local overrides, and custom default/missing icons.
+
+- Resolve VRCFury logos and U# component icons without SDK dependencies.
+- Indicate rig bones and their child attachments in the hierarchy.
+- Add VCC/VPM packaging, release workflow, and installation page.
+
 ## v0.12.0
 
 ### Changes

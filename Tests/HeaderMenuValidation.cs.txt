@@ -1,0 +1,48 @@
+using System;
+using System.Reflection;
+using UnityEditor;
+using UnityEngine;
+using HierarchyDecorator;
+public static class HeaderMenuValidation {
+ public static void Run() {
+  HeaderPrefixValidation.Run();
+  var assembly=typeof(HierarchyManager).Assembly;
+  var settingsField=assembly.GetType("HierarchyDecorator.HierarchyDecorator").GetField("s_Settings",BindingFlags.Static|BindingFlags.NonPublic);
+  var original=settingsField.GetValue(null);
+  var settings=ScriptableObject.CreateInstance<Settings>();
+  settingsField.SetValue(null,settings);
+  var create=assembly.GetType("HierarchyDecorator.HierarchyHeaderMenu").GetMethod("Create",BindingFlags.Static|BindingFlags.NonPublic);
+  Func<GameObject,string,string,GameObject> add=(context,style,label)=>(GameObject)create.Invoke(null,new object[]{new MenuCommand(context),style,label});
+  int count=0;
+  Action<bool,string> check=(ok,name)=>{if(!ok)throw new Exception(name);count++;Debug.Log("PASS: "+name);};
+  var parent=new GameObject("Container");
+  var target=new GameObject("Target"); target.transform.parent=parent.transform;
+  GameObject root=null;
+  try {
+   Undo.IncrementCurrentGroup();
+   var header=add(target,"Header (Centered)","Header");
+   check(header.name=="=== Header","Default menu prefix");
+   check(header.transform.parent==parent.transform && header.transform.GetSiblingIndex()==0 && target.transform.GetSiblingIndex()==1,"Insert above clicked sibling");
+   check(Selection.activeGameObject==header,"New header selected");
+   Undo.FlushUndoRecordObjects(); Undo.PerformUndo();
+   check(header==null,"Undo removes header");
+   Undo.PerformRedo();
+   check(parent.transform.childCount==2 && parent.transform.GetChild(0).name=="=== Header","Redo restores placement");
+   var sub=add(target,"Subheader","Subheader");check(sub.name=="--- Subheader","Subheader menu");
+   var mini=add(target,"Mini Header (Centered)","Mini Header");check(mini.name=="+++ Mini Header","Mini header menu");
+   settings.styleData.styles[1].prefix="CUSTOM";
+   settings.styleData.styles[1].noSpaceAfterPrefix=true;
+   check(add(target,"Subheader","Label").name=="CUSTOMLabel","Saved prefix and spacing respected");
+   settings.styleData.styles[1].isRegex=true;
+   check(add(target,"Subheader","Label")==null,"Regex style not used as literal prefix");
+   root=add(null,"Header (Centered)","Root");
+   check(root.transform.parent==null && root.scene.IsValid(),"No-context root creation");
+   Debug.Log("HEADER_MENU_CHECKS_PASSED="+count);
+  } finally {
+   settingsField.SetValue(null,original);
+   UnityEngine.Object.DestroyImmediate(parent);
+   if(root!=null)UnityEngine.Object.DestroyImmediate(root);
+   UnityEngine.Object.DestroyImmediate(settings);
+  }
+ }
+}

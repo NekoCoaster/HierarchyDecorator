@@ -1,0 +1,52 @@
+using System;
+using System.IO;
+using System.Reflection;
+using UnityEditor;
+using UnityEngine;
+
+public static class CustomIconsValidation
+{
+    public static void Run()
+    {
+        ForkValidation.Run();
+        const string folder = "Assets/HierarchyDecorator/CustomIcons/ForkValidation";
+        if (Directory.Exists(folder)) throw new Exception("Test folder already exists");
+        var assembly = typeof(HierarchyDecorator.HierarchyManager).Assembly;
+        var registry = assembly.GetType("HierarchyDecorator.CustomComponentIcons");
+        var refresh = registry.GetMethod("Refresh", BindingFlags.Static | BindingFlags.NonPublic);
+        var find = registry.GetMethod("Find", BindingFlags.Static | BindingFlags.NonPublic);
+        var resolver = assembly.GetType("HierarchyDecorator.ComponentIconResolver").GetMethod("Resolve", BindingFlags.Static | BindingFlags.NonPublic);
+        var texture = new Texture2D(2,2);
+        texture.SetPixels(new[] { Color.red, Color.green, Color.blue, Color.white });
+        texture.Apply();
+        try
+        {
+            Directory.CreateDirectory(folder);
+            foreach (var name in new[] { "AudioLink", "CustomFixture.AudioLink", "Default", "Missing", "UdonBehaviour" })
+                File.WriteAllBytes(folder + "/" + name + ".png", texture.EncodeToPNG());
+            AssetDatabase.Refresh();
+            refresh.Invoke(null,null);
+            Func<string,Texture> lookup = name => (Texture)find.Invoke(null,new object[]{name});
+            Func<Type,Texture,Texture> resolve = (type,fallback) => (Texture)resolver.Invoke(null,new object[]{type,null,fallback});
+            Action<bool,string> check = (ok,label) => { if (!ok) throw new Exception(label); Debug.Log("PASS: " + label); };
+            check(lookup("AudioLink") != null,"Project-local icon discovered in subfolder");
+            check(resolve(typeof(CustomFixture.AudioLink),Texture2D.whiteTexture) == lookup("CustomFixture.AudioLink"),"Full name wins over short name");
+            check(resolve(typeof(OtherFixture.AudioLink),Texture2D.whiteTexture) == lookup("AudioLink"),"Short name association resolves");
+            check(lookup("Missing") != null,"Missing-script artwork discovered");
+            check(resolve(typeof(CustomFixture.GenericScript),EditorGUIUtility.IconContent("cs Script Icon").image) == lookup("Default"),"Default replaces generic script icon");
+            check(resolve(typeof(VRC.Udon.UdonBehaviour),Texture2D.whiteTexture) == Resources.Load<Texture2D>("UdonSharpProgramAsset icon"),"U# takes precedence over custom UdonBehaviour icon");
+            AssetDatabase.DeleteAsset(folder + "/AudioLink.png");
+            refresh.Invoke(null,null);
+            check(resolve(typeof(OtherFixture.AudioLink),Texture2D.whiteTexture) == Texture2D.whiteTexture,"Removed icon invalidates both caches");
+            Debug.Log("CUSTOM_ICON_CHECKS_PASSED=7");
+        }
+        finally
+        {
+            AssetDatabase.DeleteAsset(folder);
+            UnityEngine.Object.DestroyImmediate(texture);
+            refresh.Invoke(null,null);
+        }
+    }
+}
+namespace CustomFixture { public class AudioLink : MonoBehaviour {} public class GenericScript : MonoBehaviour {} }
+namespace OtherFixture { public class AudioLink : MonoBehaviour {} }

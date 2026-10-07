@@ -60,7 +60,7 @@ namespace HierarchyDecorator
 
         protected override int CalculateGridCount()
         {
-            return componentCount;
+            return componentCount + (requireWarning ? 1 : 0);
         }
 
         protected override bool DrawerIsEnabled(HierarchyItem item, Settings settings)
@@ -171,7 +171,8 @@ namespace HierarchyDecorator
         private void DrawMissingComponent(Rect rect)
         {
             rect = GetIconPosition(rect);
-            DrawIcon(rect, warningGUI);
+            var custom = CustomComponentIcons.Find("Missing");
+            DrawIcon(rect, custom != null ? new GUIContent(custom, "Missing Script") : warningGUI);
         }
 
         private void DrawIcon(Rect rect, GUIContent content)

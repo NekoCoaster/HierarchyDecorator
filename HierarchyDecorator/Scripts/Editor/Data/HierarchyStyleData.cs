@@ -46,7 +46,7 @@ namespace HierarchyDecorator
         public List<HierarchyStyle> styles = new List<HierarchyStyle> ()
         {
              new HierarchyStyle(
-                "=" ,
+                "===" ,
                 "Header (Centered)",
                 new ModeOptions(
                     new Color (0.1764706f, 0.1764706f, 0.1764706f),
@@ -64,7 +64,7 @@ namespace HierarchyDecorator
                 },
 
             new HierarchyStyle(
-                "-",
+                "---",
                 "Subheader",
                 new ModeOptions(
                     new Color (0.245283f, 0.245283f, 0.245283f),
@@ -81,7 +81,7 @@ namespace HierarchyDecorator
                 },
 
             new HierarchyStyle(
-                "+",
+                "+++",
                 "Mini Header (Centered)",
                 new ModeOptions(
                     Color.white,

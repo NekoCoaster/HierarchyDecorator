@@ -1,0 +1,61 @@
+using System;
+using System.Reflection;
+using UnityEditor;
+using UnityEngine;
+public static class ForkValidation
+{
+    static int count;
+    static void Check(bool value, string name) { if (!value) throw new Exception(name); Debug.Log("PASS: " + name); count++; }
+    public static void Run()
+    {
+        var assembly = typeof(HierarchyDecorator.HierarchyManager).Assembly;
+        var bones = assembly.GetType("HierarchyDecorator.BoneIconInfo");
+        var check = bones.GetMethod("IsBoneOrAttachment", BindingFlags.NonPublic | BindingFlags.Static);
+        var invalidate = bones.GetMethod("Invalidate", BindingFlags.NonPublic | BindingFlags.Static);
+        Func<Transform,bool> hasBone = t => (bool)check.Invoke(null,new object[]{t});
+        var root = new GameObject("Armature");
+        var bone = new GameObject("Bone"); bone.transform.parent = root.transform;
+        var attachment = new GameObject("Attachment"); attachment.transform.parent = bone.transform;
+        var renderer = root.AddComponent<SkinnedMeshRenderer>();
+        renderer.bones = new[]{bone.transform};
+        invalidate.Invoke(null,null);
+        Check(!hasBone(root.transform), "Armature name alone is not a bone");
+        Check(hasBone(bone.transform), "Skinned mesh bone recognized");
+        Check(hasBone(attachment.transform), "Bone attachment recognized");
+        root.SetActive(false); invalidate.Invoke(null,null);
+        Check(hasBone(bone.transform), "Inactive rig recognized");
+        attachment.transform.parent = null; invalidate.Invoke(null,null);
+        Check(!hasBone(attachment.transform), "Reparent removes marker");
+        renderer.bones = new Transform[0]; invalidate.Invoke(null,null);
+        Check(!hasBone(bone.transform), "Removed bone reference clears cache");
+        renderer.rootBone = bone.transform; invalidate.Invoke(null,null);
+        Check(hasBone(bone.transform), "Root bone recognized without bone array");
+        var resolver = assembly.GetType("HierarchyDecorator.ComponentIconResolver").GetMethod("Resolve",BindingFlags.Static|BindingFlags.NonPublic);
+        var fallback = Texture2D.whiteTexture;
+        Check((Texture)resolver.Invoke(null,new object[]{typeof(Transform),null,fallback}) == fallback,"No SDK fallback");
+        var fury = AssetDatabase.LoadAssetAtPath<Texture2D>("Packages/com.vrcfury.vrcfury/VrcfResources/logo.png");
+        var udon = Resources.Load<Texture2D>("UdonSharpProgramAsset icon");
+        Check(fury != null && udon != null, "Integration test textures imported");
+        Check((Texture)resolver.Invoke(null,new object[]{typeof(VF.Model.VRCFury),null,fallback}) == fury, "VRCFury logo selected through base class");
+        Check((Texture)resolver.Invoke(null,new object[]{typeof(VRC.Udon.UdonBehaviour),null,fallback}) == udon, "Udon Behaviour selects U#");
+        Check((Texture)resolver.Invoke(null,new object[]{typeof(TestUdonScript),null,fallback}) == udon, "Derived UdonSharp script selects U#");
+        var componentType = new HierarchyDecorator.ComponentType(typeof(Transform),true);
+        componentType.UpdateContent();
+        var originalContent = typeof(HierarchyDecorator.ComponentType).GetField("content",BindingFlags.NonPublic|BindingFlags.Instance);
+        var content = (GUIContent)originalContent.GetValue(componentType);
+        var resolved = componentType.Content;
+        Check(!ReferenceEquals(content,resolved), "Resolved icons do not mutate serialized settings");
+        var icon = (Texture2D)bones.GetMethod("CreateBoneIcon",BindingFlags.NonPublic|BindingFlags.Static).Invoke(null,null);
+        Check(icon.width == 32 && icon.GetPixel(16,16).a == 1 && icon.GetPixel(0,0).a == 0,"Bone icon pixels");
+        UnityEngine.Object.DestroyImmediate(icon);
+        UnityEngine.Object.DestroyImmediate(root); UnityEngine.Object.DestroyImmediate(attachment);
+        Debug.Log("HIERARCHY_FORK_CHECKS_PASSED=" + count);
+    }
+}
+
+// Type-shape fixtures for optional integrations; these are not the actual SDKs.
+namespace VF.Component { public class VRCFuryComponent : MonoBehaviour {} }
+namespace VF.Model { public class VRCFury : VF.Component.VRCFuryComponent {} }
+namespace VRC.Udon { public class UdonBehaviour : MonoBehaviour {} }
+namespace UdonSharp { public class UdonSharpBehaviour : MonoBehaviour {} }
+public class TestUdonScript : UdonSharp.UdonSharpBehaviour {}

@@ -1,0 +1,31 @@
+using System;
+using System.Reflection;
+using UnityEditor;
+using UnityEngine;
+using HierarchyDecorator;
+public static class HeaderMigrationValidation {
+ public static void Run() {
+  var method=typeof(Settings).GetMethod("UpgradeHeaderPrefixes",BindingFlags.Instance|BindingFlags.NonPublic);
+  var s=ScriptableObject.CreateInstance<Settings>();
+  try {
+   string[] old={"=","-","+"}; string[] next={"===","---","+++"};
+   for(int i=0;i<3;i++)s.styleData.styles[i].prefix=old[i];
+   s.styleData.styles[0].fontSize=23;
+   var custom=new HierarchyStyle{ name="My custom", prefix="-" };s.styleData.styles.Add(custom);
+   var regex=new HierarchyStyle{ name="Subheader",prefix="-",isRegex=true };s.styleData.styles.Add(regex);
+   var customized=new HierarchyStyle{ name="Subheader",prefix="CUSTOM" };s.styleData.styles.Add(customized);
+   if(!(bool)method.Invoke(s,null))throw new Exception("Migration did not run");
+   for(int i=0;i<3;i++)if(s.styleData.styles[i].prefix!=next[i])throw new Exception("Legacy default not migrated");
+   if(s.styleData.styles[0].fontSize!=23 || custom.prefix!="-" || regex.prefix!="-" || customized.prefix!="CUSTOM")throw new Exception("Customization changed");
+   s.styleData.styles[1].prefix="-";
+   var json=EditorJsonUtility.ToJson(s);
+   var loaded=ScriptableObject.CreateInstance<Settings>();
+   try {
+    EditorJsonUtility.FromJsonOverwrite(json,loaded);
+    if((bool)method.Invoke(loaded,null) || loaded.styleData.styles[1].prefix!="-")throw new Exception("Migration repeated after reload");
+   }finally{UnityEngine.Object.DestroyImmediate(loaded);}
+   Debug.Log("HEADER_MIGRATION_CHECKS_PASSED");
+  }finally{UnityEngine.Object.DestroyImmediate(s);}
+  HeaderMenuValidation.Run();
+ }
+}

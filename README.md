@@ -1,3 +1,72 @@
+# HierarchyDecorator - Neko's Fork
+
+**[Install with VCC / VPM](https://nekocoaster.github.io/HierarchyDecorator/)** · [Repository JSON](https://nekocoaster.github.io/HierarchyDecorator/index.json)
+
+Open the install page and click **Add to VCC**, then choose **Manage Project** and install **HierarchyDecorator - Neko's Fork**. Alternatively, paste the repository JSON URL into VCC **Settings → Packages → Add Repository**.
+
+These links become available after the first release workflow deploys successfully. Before publication, add this checkout through VCC's **User Packages** settings.
+
+This fork adds VRCFury logos, U# icons for Udon Behaviours and UdonSharp scripts, and a bone indicator for rig bones and objects parented beneath them. It reads skinned-mesh and humanoid rig references, including inactive rigs; simply naming an object `Armature` does not mark it as a bone. Existing component filters and the overall icon toggle apply; **Show Bone Icons** independently toggles the bone indicator in icon settings. Neither VRChat nor VRCFury is a required dependency.
+
+VPM migrates the upstream UPM package (`com.wooshii.hierarchydecorator`). For an old Assets-based installation, remove its scripts before installing this fork, preserving your Settings asset. Keeping both copies causes duplicate classes. Automatic folder deletion is avoided because upstream stores user settings alongside its scripts.
+
+## Headers
+
+Right-click a scene object in the Hierarchy and choose **Hierarchy Decorator →
+Header / Subheader / Mini Header** to insert a label immediately above it at the
+same level. With no context object, the label is created at the current stage's
+root. The new object is selected for renaming, and creation supports Undo.
+Commands use the corresponding saved style's prefix; a command is disabled if
+that named style was removed, renamed, or changed to a regular expression.
+
+Create an empty GameObject and name it `=== ENVIRONMENT` for a centered header,
+`--- Lighting` for a left-aligned subheader, or `+++ Props` for a small centered
+header. Include the space after the prefix, then move the object to the desired
+position in the hierarchy. Single-character prefixes no longer match the defaults.
+
+Existing settings receive a one-time upgrade of the original named built-in styles:
+`=` becomes `===`, `-` becomes `---`, and `+` becomes `+++`. Custom prefixes,
+renamed styles, regex styles, and appearance settings are preserved. You can change
+the prefixes afterward under **Edit → Preferences → Hierarchy Decorator → Visual**.
+Existing single-prefix header GameObjects must be renamed to use the new prefixes;
+the upgrade does not rename scene objects.
+
+## Custom component icons
+
+Place your own licensed textures in `Assets/HierarchyDecorator/CustomIcons/`.
+Name each image after the component class, such as `AudioLink.png`, `LTCGI_Screen.png`,
+or `VRCPhysBone.png`. A fully qualified class name can disambiguate matching names.
+Subfolders are supported. Project icons override matching bundled filenames.
+`Default.png` replaces generic script icons; `Missing.png` represents missing scripts.
+The U# icon still takes precedence for Udon and UdonSharp behaviours when available.
+Icons refresh after project changes, or through **Tools → HierarchyDecorator → Refresh Custom Icons**.
+
+The public package currently includes the MIT-licensed icon loader, without
+HierarchyPlus artwork. Separately supplied artwork retains its own terms.
+
+**Icons8 artwork attribution:** Icons by [Icons8](https://icons8.com), when installed.
+**Reusing Icons8 icons requires an active Icons8 license.** The MIT license for
+HierarchyDecorator code does not cover Icons8 artwork. The same credit and link
+are available through **Tools → HierarchyDecorator → Icon Artwork Credits**.
+
+Icons8 support has asked us to wait for the team's final confirmation before
+publishing artwork in the repository or installation ZIPs. The open-source
+application and account/download setup are pending. Once approved, artwork for
+the public bundle will be sourced directly from Icons8 under the finalized terms.
+
+## Publishing updates
+
+1. Enable Actions on the fork. In GitHub **Settings → Pages**, select **GitHub Actions** as the source.
+2. Update `package.json` version and its release ZIP `url`, then update the changelog.
+3. Push a matching tag, e.g. `v0.13.0`. The **Release VPM package** workflow builds the ZIP, publishes a release, and deploys the installation page and VPM listing. Existing listed versions are retained.
+4. Check the workflow, the JSON URL, and a clean VCC install before announcing the release. A failed run can be rerun on the same tag.
+
+Local packaging: `python Tools/build_vpm.py`. Validation: `python -m unittest discover -s Tests -p 'test_*.py'`. Generated files are in `dist/`.
+
+Original project and MIT attribution follow.
+
+---
+
 <h1 align="center">  
  <img width="824" alt="HierarchyDecoratorNew" src="https://user-images.githubusercontent.com/31889435/226486126-009081e1-44de-465c-8ff7-5641870fdcae.png">
  
@@ -37,25 +106,15 @@ Everything is optional, and can be modified to the requirements of the project.
 </p>
 
 ## Installation
-<p align="center">
-  <a href="https://github.com/WooshiiDev/HierarchyDecorator/releases">Releases</a> • <a href="https://github.com/WooshiiDev/HierarchyDecorator/releases/download/v0.11.2/HierarchyDecorator.v0.11.2.unitypackage">Unity Package</a> • <a href="https://github.com/WooshiiDev/HierarchyDecorator/archive/master.zip">Zip</a> 
-</p>
 
-HierarchyDecorator can also be installed directly through the git url
-```
-https://github.com/WooshiiDev/HierarchyDecorator.git
-```
+Use the VCC/VPM installation instructions at the top of this README for Neko's fork.
+For Unity Package Manager's **Add package from git URL**, use:
 
-You can also install it via [upm](https://openupm.com/)
-
-```
-openupm add com.wooshii.hierarchydecorator
+```text
+https://github.com/NekoCoaster/HierarchyDecorator.git
 ```
 
-You can also install this via git by adding the following to your **manifest.json**
-```
-"com.wooshii.hierarchydecorator" : "https://github.com/WooshiiDev/HierarchyDecorator.git"
-```
+The original upstream package and this fork must not be installed together.
 
 ## Features
 
