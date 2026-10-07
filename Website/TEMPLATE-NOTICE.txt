@@ -1,0 +1,3 @@
+Page markup and base styles adapted from VRChat community template-package-listing, commit 0c6013555c9566a1658320e5495576f48a4424a0.
+https://github.com/vrchat-community/template-package-listing
+Local changes: metadata rendering, branding, interaction handling, and responsive layout. No artwork from the example listing or Icons8 is used.

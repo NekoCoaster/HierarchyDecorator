@@ -2,10 +2,6 @@
 
 **[Install with VCC / VPM](https://nekocoaster.github.io/HierarchyDecorator/)** · [Repository JSON](https://nekocoaster.github.io/HierarchyDecorator/index.json)
 
-Open the install page and click **Add to VCC**, then choose **Manage Project** and install **HierarchyDecorator - Neko's Fork**. Alternatively, paste the repository JSON URL into VCC **Settings → Packages → Add Repository**.
-
-These links become available after the first release workflow deploys successfully. Before publication, add this checkout through VCC's **User Packages** settings.
-
 This fork adds VRCFury logos, U# icons for Udon Behaviours and UdonSharp scripts, and a bone indicator for rig bones and objects parented beneath them. It reads skinned-mesh and humanoid rig references, including inactive rigs; simply naming an object `Armature` does not mark it as a bone. Existing component filters and the overall icon toggle apply; **Show Bone Icons** independently toggles the bone indicator in icon settings. Neither VRChat nor VRCFury is a required dependency.
 
 VPM migrates the upstream UPM package (`com.wooshii.hierarchydecorator`). For an old Assets-based installation, remove its scripts before installing this fork, preserving your Settings asset. Keeping both copies causes duplicate classes. Automatic folder deletion is avoided because upstream stores user settings alongside its scripts.
@@ -62,6 +58,12 @@ the public bundle will be sourced directly from Icons8 under the finalized terms
 4. Check the workflow, the JSON URL, and a clean VCC install before announcing the release. A failed run can be rerun on the same tag.
 
 Local packaging: `python Tools/build_vpm.py`. Validation: `python -m unittest discover -s Tests -p 'test_*.py'`. Generated files are in `dist/`.
+
+The landing page adapts the [official VRChat package-listing template](https://github.com/vrchat-community/template-package-listing).
+Changes to `Website/` on `master` run **Publish listing page**, refreshing the page
+from the existing published listing without changing release ZIPs or checksums.
+GitHub's `github-pages` environment must allow deployments from `master` for page
+updates and `v*` tags for package releases.
 
 Original project and MIT attribution follow.
 
