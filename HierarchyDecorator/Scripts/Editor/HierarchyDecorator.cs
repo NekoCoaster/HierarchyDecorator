@@ -60,12 +60,19 @@ namespace HierarchyDecorator
         /// <returns>The loaded settings</returns>
         private static Settings GetOrCreateSettings()
         {
-            if (TryLoadSettings(out Settings settings))
-            {
-                return settings;
-            }
+            if (!TryLoadSettings(out Settings settings) || settings == null)
+                settings = CreateSettings();
 
-            return CreateSettings();
+            if (settings.UpgradeHeaderPrefixes())
+            {
+                EditorUtility.SetDirty(settings);
+                // Settings may be requested from an import callback; save after it finishes.
+                EditorApplication.delayCall += () =>
+                {
+                    if (settings != null && AssetDatabase.Contains(settings)) AssetDatabase.SaveAssets();
+                };
+            }
+            return settings;
         }
 
         private static bool TryLoadSettings(out Settings settings)

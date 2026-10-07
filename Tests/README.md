@@ -43,3 +43,5 @@ name exclusion, prefix boundaries, custom prefix compatibility, insertion above
 the target, selection, Undo/Redo, all three menu variants, custom spacing, regex
 rejection, and root creation. This does not reproduce or diagnose a historical
 editor crash, nor visually verify the context menu or prefab-stage behavior.
+
+For saved-settings migration, copy HeaderMigrationValidation.cs.txt into the fixture as an editor C# file and run HeaderMigrationValidation.Run. Validated in Unity 2022.3.22f1: legacy prefixes upgraded, custom/regex styles and font settings preserved, serialized migration version prevents repeat upgrades; all 29 header/menu checks also passed.

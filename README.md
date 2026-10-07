@@ -24,9 +24,12 @@ Create an empty GameObject and name it `=== ENVIRONMENT` for a centered header,
 header. Include the space after the prefix, then move the object to the desired
 position in the hierarchy. Single-character prefixes no longer match the defaults.
 
-These defaults apply to new settings assets. Existing saved settings are preserved;
-change the three prefixes under **Edit → Preferences → Hierarchy Decorator → Visual**
-to use the new defaults in an existing project.
+Existing settings receive a one-time upgrade of the original named built-in styles:
+`=` becomes `===`, `-` becomes `---`, and `+` becomes `+++`. Custom prefixes,
+renamed styles, regex styles, and appearance settings are preserved. You can change
+the prefixes afterward under **Edit → Preferences → Hierarchy Decorator → Visual**.
+Existing single-prefix header GameObjects must be renamed to use the new prefixes;
+the upgrade does not rename scene objects.
 
 ## Custom component icons
 

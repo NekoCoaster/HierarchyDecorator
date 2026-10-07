@@ -15,6 +15,23 @@ namespace HierarchyDecorator
         [SerializeField]
         private ComponentData components = new ComponentData ();
 
+        [SerializeField, HideInInspector] private int headerPrefixVersion;
+
+        internal bool UpgradeHeaderPrefixes()
+        {
+            if (headerPrefixVersion >= 1) return false;
+            if (styleData != null && styleData.styles != null)
+                foreach (var style in styleData.styles)
+                {
+                    if (style == null || style.isRegex) continue;
+                    if (style.name == "Header (Centered)" && style.prefix == "=") style.prefix = "===";
+                    else if (style.name == "Subheader" && style.prefix == "-") style.prefix = "---";
+                    else if (style.name == "Mini Header (Centered)" && style.prefix == "+") style.prefix = "+++";
+                }
+            headerPrefixVersion = 1;
+            return true;
+        }
+
         // Properties
 
         public ComponentData Components
