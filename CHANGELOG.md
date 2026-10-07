@@ -1,3 +1,9 @@
+## 0.13.0 - Neko's Fork
+
+- Resolve VRCFury logos and U# component icons without SDK dependencies.
+- Indicate rig bones and their child attachments in the hierarchy.
+- Add VCC/VPM packaging, release workflow, and installation page.
+
 ## v0.12.0
 
 ### Changes

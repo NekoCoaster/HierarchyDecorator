@@ -16,6 +16,7 @@ namespace HierarchyDecorator
         [SerializeField] protected string displayName;
         [SerializeField] protected string name;
         [SerializeField] protected GUIContent content;
+        [NonSerialized] private GUIContent resolvedContent;
 
         // --- Settings
 
@@ -92,7 +93,18 @@ namespace HierarchyDecorator
         /// <summary>
         /// The GUIContent displayed for this component.
         /// </summary>
-        public GUIContent Content => content;
+        public GUIContent Content
+        {
+            get
+            {
+                if (content == null) return null;
+                if (resolvedContent == null) resolvedContent = new GUIContent();
+                resolvedContent.text = content.text;
+                resolvedContent.tooltip = content.tooltip;
+                resolvedContent.image = ComponentIconResolver.Resolve(Type, script, content.image);
+                return resolvedContent;
+            }
+        }
 
         /// <summary>
         /// Can this component be toggled on/off or not.

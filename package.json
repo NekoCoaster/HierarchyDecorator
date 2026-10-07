@@ -1,19 +1,27 @@
 {
-  "name": "com.wooshii.hierarchydecorator",
-  "displayName": "HierarchyDecorator",
-  "version": "0.12.1",
+  "name": "com.nekocoaster.hierarchydecorator",
+  "displayName": "HierarchyDecorator - Neko's Fork",
+  "version": "0.13.0",
   "unity": "2018.4",
-  "description": "HierarchyDecorator is an extension for the Unity Hierarchy enhancing it's utility.",
+  "description": "Neko's fork of HierarchyDecorator, with VRCFury and UdonSharp icons, rig bone indicators, and VPM installation.",
   "keywords": [
     "hierarchy",
     "editor"
   ],
   "category": "Editor",
   "dependencies": {},
-
-   "author": {
+  "author": {
     "name": "Wooshii",
     "email": "wooshiidev@gmail.com",
     "url": "https://github.com/WooshiiDev/HierarchyDecorator"
-  }
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NekoCoaster/HierarchyDecorator.git"
+  },
+  "url": "https://github.com/NekoCoaster/HierarchyDecorator/releases/download/v0.13.0/com.nekocoaster.hierarchydecorator-0.13.0.zip",
+  "legacyPackages": [
+    "com.wooshii.hierarchydecorator"
+  ]
 }

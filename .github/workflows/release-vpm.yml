@@ -1,0 +1,61 @@
+name: Release VPM package
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: vpm-release
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate release tag
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          python - <<'PY'
+          import json, os
+          version = json.load(open('package.json'))['version']
+          if os.environ['REF_TYPE'] != 'tag' or os.environ['REF_NAME'] != 'v' + version:
+              raise SystemExit('Run this workflow on the tag matching package.json (v' + version + ')')
+          PY
+      - name: Retrieve previous listing
+        run: |
+          status=$(curl --retry 3 --silent --show-error -o previous.json -w '%{http_code}' https://nekocoaster.github.io/HierarchyDecorator/index.json)
+          if [ "$status" = 404 ]; then rm previous.json; elif [ "$status" != 200 ]; then exit 1; fi
+      - name: Build and validate
+        run: |
+          python -m unittest discover -s Tests -p 'test_*.py'
+          python Tools/build_vpm.py --previous previous.json
+      - name: Publish package
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          if ! gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release create "$RELEASE_TAG" --verify-tag --title "HierarchyDecorator - Neko's Fork $RELEASE_TAG" --generate-notes
+          fi
+          gh release upload "$RELEASE_TAG" dist/*.zip --clobber
+      - uses: actions/configure-pages@v5
+      - name: Prepare listing site
+        run: |
+          mkdir site
+          cp dist/index.json dist/index.html site/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - uses: actions/deploy-pages@v4
+        id: deployment

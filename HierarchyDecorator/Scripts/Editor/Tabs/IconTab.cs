@@ -175,7 +175,7 @@ namespace HierarchyDecorator
             display.ToggleStyle = Style.ToolbarButtonLeft;
 
             CreateDrawableGroup("Settings")
-                .RegisterSerializedProperty(serializedTab, "enableIcons", "clickToToggleComponent", "stackDuplicateIcons", "showMissingScriptWarning");
+                .RegisterSerializedProperty(serializedTab, "enableIcons", "clickToToggleComponent", "stackDuplicateIcons", "showMissingScriptWarning", "showBoneIcons");
         }
 
         // Methods
