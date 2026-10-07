@@ -26,3 +26,11 @@ Before releasing, manually verify in actual Avatar and World projects: VRCFury a
 Udon icons, stacked/unstacked icons, light/dark themes, bone toggle, humanoid rigs,
 prefab mode, Undo/Redo, and clean VCC installation from the published listing.
 Those GUI/SDK and online installation checks are not covered by the synthetic run.
+
+For custom icon lookup tests, also copy `CustomIconsValidation.cs.txt` to the
+fixture's `Assets/Editor/CustomIconsValidation.cs` and run
+`-executeMethod CustomIconsValidation.Run`. This first runs the 14 existing checks,
+then seven additional checks using generated test textures: nested project folders,
+full-name precedence, short-name associations, missing/default artwork, U# precedence,
+and cache invalidation after removing artwork. The generated test folder is cleaned up.
+Validated on 2026-10-07: all 21 checks passed in Unity 2022.3.22f1, process exit 0.

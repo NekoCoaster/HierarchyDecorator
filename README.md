@@ -10,6 +10,28 @@ This fork adds VRCFury logos, U# icons for Udon Behaviours and UdonSharp scripts
 
 VPM migrates the upstream UPM package (`com.wooshii.hierarchydecorator`). For an old Assets-based installation, remove its scripts before installing this fork, preserving your Settings asset. Keeping both copies causes duplicate classes. Automatic folder deletion is avoided because upstream stores user settings alongside its scripts.
 
+## Custom component icons
+
+Place your own licensed textures in `Assets/HierarchyDecorator/CustomIcons/`.
+Name each image after the component class, such as `AudioLink.png`, `LTCGI_Screen.png`,
+or `VRCPhysBone.png`. A fully qualified class name can disambiguate matching names.
+Subfolders are supported. Project icons override matching bundled filenames.
+`Default.png` replaces generic script icons; `Missing.png` represents missing scripts.
+The U# icon still takes precedence for Udon and UdonSharp behaviours when available.
+Icons refresh after project changes, or through **Tools → HierarchyDecorator → Refresh Custom Icons**.
+
+The public package currently includes the MIT-licensed icon loader, without
+HierarchyPlus artwork. Separately supplied artwork retains its own terms.
+
+**Icons8 artwork attribution:** Icons by [Icons8](https://icons8.com), when installed.
+**Reusing Icons8 icons requires an active Icons8 license.** The MIT license for
+HierarchyDecorator code does not cover Icons8 artwork. The same credit and link
+are available through **Tools → HierarchyDecorator → Icon Artwork Credits**.
+
+Icons8 support has confirmed the proposed repository/ZIP distribution setup with
+these conditions; the open-source application is awaiting final review. Artwork
+for the public bundle will be sourced directly from Icons8 as support recommended.
+
 ## Publishing updates
 
 1. Enable Actions on the fork. In GitHub **Settings → Pages**, select **GitHub Actions** as the source.
