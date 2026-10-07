@@ -1,0 +1,24 @@
+using System;
+using UnityEngine;
+using HierarchyDecorator;
+public static class HeaderPrefixValidation {
+ public static void Run() {
+  var data = new HierarchyStyleData();
+  int checks = 0;
+  string[] prefixes = { "===", "---", "+++" };
+  for(int i=0;i<prefixes.Length;i++) {
+   if(!data.TryGetStyleFromPrefix(prefixes[i]+" Example", out var style) || style != data.styles[i]) throw new Exception("Wrong header style");
+   checks++;
+   if(data.HasStyle(prefixes[i]) || data.HasStyle(prefixes[i]+"Example")) throw new Exception("Prefix boundary mismatch");
+   checks+=2;
+  }
+  foreach(var name in new[]{"- Chair", "- ", "-", "= Environment", "+ Props", "", "-- Chair", "++ Props", "== Environment"}) {
+   if(data.HasStyle(name)) throw new Exception("Unexpected header: "+name);
+   checks++;
+  }
+  data.styles[1].prefix = "-";
+  if(!data.HasStyle("- Custom legacy header")) throw new Exception("Custom prefix compatibility");
+  checks++;
+  Debug.Log("HEADER_PREFIX_CHECKS_PASSED="+checks);
+ }
+}

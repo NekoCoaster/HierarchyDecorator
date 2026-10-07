@@ -10,6 +10,24 @@ This fork adds VRCFury logos, U# icons for Udon Behaviours and UdonSharp scripts
 
 VPM migrates the upstream UPM package (`com.wooshii.hierarchydecorator`). For an old Assets-based installation, remove its scripts before installing this fork, preserving your Settings asset. Keeping both copies causes duplicate classes. Automatic folder deletion is avoided because upstream stores user settings alongside its scripts.
 
+## Headers
+
+Right-click a scene object in the Hierarchy and choose **Hierarchy Decorator →
+Header / Subheader / Mini Header** to insert a label immediately above it at the
+same level. With no context object, the label is created at the current stage's
+root. The new object is selected for renaming, and creation supports Undo.
+Commands use the corresponding saved style's prefix; a command is disabled if
+that named style was removed, renamed, or changed to a regular expression.
+
+Create an empty GameObject and name it `=== ENVIRONMENT` for a centered header,
+`--- Lighting` for a left-aligned subheader, or `+++ Props` for a small centered
+header. Include the space after the prefix, then move the object to the desired
+position in the hierarchy. Single-character prefixes no longer match the defaults.
+
+These defaults apply to new settings assets. Existing saved settings are preserved;
+change the three prefixes under **Edit → Preferences → Hierarchy Decorator → Visual**
+to use the new defaults in an existing project.
+
 ## Custom component icons
 
 Place your own licensed textures in `Assets/HierarchyDecorator/CustomIcons/`.

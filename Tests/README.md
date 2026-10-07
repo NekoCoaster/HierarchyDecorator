@@ -34,3 +34,12 @@ then seven additional checks using generated test textures: nested project folde
 full-name precedence, short-name associations, missing/default artwork, U# precedence,
 and cache invalidation after removing artwork. The generated test folder is cleaned up.
 Validated on 2026-10-07: all 21 checks passed in Unity 2022.3.22f1, process exit 0.
+
+For headers, copy `HeaderPrefixValidation.cs.txt` and `HeaderMenuValidation.cs.txt`
+to matching `.cs` files under the fixture's `Assets/Editor`, then run
+`-executeMethod HeaderMenuValidation.Run`. On 2026-10-07, Unity 2022.3.22f1 passed
+19 prefix checks and 10 menu checks (exit 0): triple-character defaults, legacy
+name exclusion, prefix boundaries, custom prefix compatibility, insertion above
+the target, selection, Undo/Redo, all three menu variants, custom spacing, regex
+rejection, and root creation. This does not reproduce or diagnose a historical
+editor crash, nor visually verify the context menu or prefab-stage behavior.

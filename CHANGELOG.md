@@ -1,5 +1,8 @@
 ## 0.13.0 - Neko's Fork
 
+- Use `===`, `---`, and `+++` as the default header prefixes to reduce accidental matches with asset names. Existing saved styles are preserved.
+- Add hierarchy context-menu commands to create headers, subheaders, and mini headers with Undo and the configured style prefixes.
+
 - Support component-name icon associations, project-local overrides, and custom default/missing icons.
 
 - Resolve VRCFury logos and U# component icons without SDK dependencies.
