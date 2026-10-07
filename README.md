@@ -28,9 +28,10 @@ HierarchyPlus artwork. Separately supplied artwork retains its own terms.
 HierarchyDecorator code does not cover Icons8 artwork. The same credit and link
 are available through **Tools → HierarchyDecorator → Icon Artwork Credits**.
 
-Icons8 support has confirmed the proposed repository/ZIP distribution setup with
-these conditions; the open-source application is awaiting final review. Artwork
-for the public bundle will be sourced directly from Icons8 as support recommended.
+Icons8 support has asked us to wait for the team's final confirmation before
+publishing artwork in the repository or installation ZIPs. The open-source
+application and account/download setup are pending. Once approved, artwork for
+the public bundle will be sourced directly from Icons8 under the finalized terms.
 
 ## Publishing updates
 
