@@ -5,6 +5,10 @@ import json
 import pathlib
 import re
 import zipfile
+try:
+    from Tools.build_site import build_site
+except ModuleNotFoundError:
+    from build_site import build_site
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
@@ -31,13 +35,7 @@ def build(output, previous=None):
     entry = dict(manifest, zipSHA256=hashlib.sha256(archive.read_bytes()).hexdigest())
     listing["packages"].setdefault(name, {"versions": {}})["versions"][version] = entry
     (output / "index.json").write_text(json.dumps(listing, indent=2) + "\n", encoding="utf-8")
-    (output / "index.html").write_text("""<!doctype html><html lang="en"><meta charset="utf-8">
-<title>HierarchyDecorator - Neko's Fork</title>
-<h1>HierarchyDecorator - Neko's Fork</h1>
-<p><a href="vcc://vpm/addRepo?url=https%3A%2F%2Fnekocoaster.github.io%2FHierarchyDecorator%2Findex.json">Add to VCC</a></p>
-<p>Or add <a href="index.json">this repository URL</a> in VCC Settings → Packages → Add Repository.</p>
-<p>Then manage your project and install HierarchyDecorator - Neko's Fork.</p>
-</html>""", encoding="utf-8")
+    build_site(listing, output)
     return archive
 
 if __name__ == "__main__":
