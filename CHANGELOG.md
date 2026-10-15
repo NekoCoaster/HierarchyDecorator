@@ -1,4 +1,4 @@
-## Unreleased
+## 0.13.1 - 2026-10-15
 
 - Bundle the selected Icons8 component artwork with #60dae6 tint, explicit AudioLink mappings, attribution, and separate artwork terms. Dropped integrations use normal/default icons.
 - Use the official orange VRCF website artwork for VRCFury components, retaining its source notice and separate upstream licence.
