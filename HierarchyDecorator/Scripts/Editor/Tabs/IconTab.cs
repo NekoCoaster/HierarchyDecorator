@@ -277,6 +277,7 @@ namespace HierarchyDecorator
 
         protected override void OnContentGUI()
         {
+            DrawConstraintHues();
             // Draw Content 
 
             HierarchyGUI.Space();
@@ -289,6 +290,33 @@ namespace HierarchyDecorator
                 DrawComponents();
             }
             EditorGUILayout.EndHorizontal();
+        }
+
+        private bool showConstraintHues;
+
+        private void DrawConstraintHues()
+        {
+            showConstraintHues = EditorGUILayout.Foldout(showConstraintHues, "Constraint icon hue shifts", true);
+            if (!showConstraintHues) return;
+            var enabled = serializedTab.FindPropertyRelative("constraintHueEnabled");
+            var hues = serializedTab.FindPropertyRelative("constraintHueShifts");
+            if (hues.arraySize != ConstraintIconHues.Names.Length) hues.arraySize = ConstraintIconHues.Names.Length;
+            EditorGUILayout.PropertyField(enabled, new GUIContent("Use Unity constraint icons"));
+            EditorGUILayout.HelpBox("Applies to Unity and VRC constraints in the hierarchy. Hue shifts preserve saturation, brightness and alpha; grey pixels stay grey. Left: original. Right: preview. Zero restores the original hue.", MessageType.Info);
+            using (new EditorGUI.DisabledScope(!enabled.boolValue))
+            {
+                for (int i = 0; i < ConstraintIconHues.Names.Length; i++)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                    var hue = hues.GetArrayElementAtIndex(i);
+                    EditorGUILayout.Slider(hue, -180f, 180f, ConstraintIconHues.Names[i] + " (degrees)");
+                    GUILayout.Label(ConstraintIconHues.Get(i, 0), GUILayout.Width(24), GUILayout.Height(24));
+                    GUILayout.Label(ConstraintIconHues.Get(i, hue.floatValue), GUILayout.Width(24), GUILayout.Height(24));
+                    if (GUILayout.Button("Reset", GUILayout.Width(48))) hue.floatValue = 0f;
+                    EditorGUILayout.EndHorizontal();
+                }
+            }
+            if (GUI.changed) EditorApplication.RepaintHierarchyWindow();
         }
 
         private void DrawSidebar()

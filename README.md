@@ -27,6 +27,20 @@ the prefixes afterward under **Edit → Preferences → Hierarchy Decorator → 
 Existing single-prefix header GameObjects must be renamed to use the new prefixes;
 the upgrade does not rename scene objects.
 
+## Constraint icon hue shifts
+
+Open **Edit → Preferences → Hierarchy Decorator → Icons** and expand
+**Constraint icon hue shifts**. Each of the six constraint types has a hue slider
+in degrees, an original/modified preview, and a **Reset** button. Changes appear
+immediately in the hierarchy and are saved with the settings; Undo is supported.
+All shifts start at zero. Disable **Use Unity constraint icons** to return to the
+normal component/custom-icon resolution.
+
+Unity constraints and their VRC counterparts use the corresponding Unity built-in
+icon. HSV hue rotation preserves saturation, brightness and transparency, so grey
+pixels stay grey. Generated textures are cached in memory; no Unity artwork is
+exported or bundled. Icons8 files in the local editing workspace are unaffected.
+
 ## Custom component icons
 
 Place your own licensed textures in `Assets/HierarchyDecorator/CustomIcons/`.

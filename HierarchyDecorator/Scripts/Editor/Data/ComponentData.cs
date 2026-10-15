@@ -67,6 +67,8 @@ namespace HierarchyDecorator
         [SerializeField] private DisplayMode showAll = DisplayMode.Unity | DisplayMode.Custom;
         [SerializeField] private bool stackDuplicateIcons;
         [SerializeField] private bool showBoneIcons = true;
+        public bool constraintHueEnabled = true;
+        public float[] constraintHueShifts = new float[6];
 
         [SerializeField] private ComponentGroup[] unityGroups = new ComponentGroup[0];
 

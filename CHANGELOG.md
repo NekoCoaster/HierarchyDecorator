@@ -1,3 +1,7 @@
+## Unreleased
+
+- Add per-type constraint icon hue shifts with live original/modified previews, reset, and saved settings. Unity and VRC constraints use Unity's built-in icons, with generated copies cached in memory.
+
 ## 0.13.0 - Neko's Fork
 
 - Use `===`, `---`, and `+++` as the default header prefixes. A one-time migration upgrades original built-in prefixes in saved settings while preserving custom and regex styles and visual settings.

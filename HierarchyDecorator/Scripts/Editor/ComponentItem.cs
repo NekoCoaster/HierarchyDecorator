@@ -17,7 +17,7 @@ namespace HierarchyDecorator
 
         // - Visual
 
-        public GUIContent Content => Type.Content;
+        public GUIContent Content => ConstraintIconHues.Resolve(Component != null ? Component.GetType() : null, Type.Content, HDSettings.Components);
 
         public string DisplayName => Type.DisplayName;
         public bool IsBuiltIn => Type.IsBuiltIn;
