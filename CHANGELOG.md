@@ -1,5 +1,7 @@
 ## Unreleased
 
+- Add per-artwork Icons8 tint controls with previews, Reset, persistence and Undo. Move the VRC icon checkbox outside the hue foldout and place its checkbox on the left.
+
 - Default new VRC constraint hue settings to -130 degrees, preserving existing settings.
 - Keep the generic Unity script icon unless a project explicitly supplies a custom Default icon.
 - Load PCS and provisional LMS component icons from their local installations without tinting or bundling vendor artwork.

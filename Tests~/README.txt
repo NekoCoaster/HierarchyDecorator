@@ -24,3 +24,6 @@ Assets/!Dismay Custom/Lovestick Massages SFX/Scripts/Runtime/DismayFolderFixture
 with: public class DismayFolderFixture : UnityEngine.MonoBehaviour {}
 The test creates synthetic PCS/LMS PNGs only when those paths are absent and
 removes them afterward. Never run this fixture in a production project.
+
+IconTintValidation.Run tests independent per-artwork colours, defaults, texture
+cache reuse/invalidation, saved colours and Undo in the disposable project.

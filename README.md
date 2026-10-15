@@ -54,7 +54,11 @@ AudioLink take precedence over the generic UdonSharp base-class fallback.
 Icons refresh after project changes, or through **Tools → HierarchyDecorator → Refresh Custom Icons**.
 
 The bundle contains 11 user-edited white Icons8 images. In-memory copies receive
-`#60dae6` tint, preserving alpha. SDK U# icons, VRCFury icons, Unity icons and
+`#60dae6` tint by default, preserving alpha. Expand **Icons8 icon tints** in the
+Icons preferences (between the VRC hue controls and credits) to set each of the
+11 artwork colours independently, with live previews and Reset. The AudioLink
+family shares one music-note tint. Colours are saved with settings and support
+Undo; Reset restores `#60dae6`. SDK U# icons, VRCFury icons, Unity icons and
 project-local overrides retain their original colours.
 
 | Component | Artwork |

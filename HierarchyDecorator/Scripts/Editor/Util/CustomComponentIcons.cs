@@ -13,6 +13,10 @@ namespace HierarchyDecorator
         private static readonly Dictionary<string, Texture2D> Icons =
             new Dictionary<string, Texture2D>(StringComparer.Ordinal);
         private static bool loaded;
+        internal static readonly Color DefaultTint = new Color(96f / 255f, 218f / 255f, 230f / 255f, 1f);
+        internal static readonly string[] TintComponents = { "VRCSceneDescriptor", "VRCContactSender", "VRCContactReceiver", "VRCAvatarDescriptor", "PipelineManager", "VRCPhysBone", "VRCPhysBoneCollider", "GestureManager", "LyumaAv3Osc", "AudioLink", "Missing" };
+        internal static readonly string[] TintLabels = { "Scene descriptor", "Contact sender", "Contact receiver", "Avatar descriptor", "Pipeline manager", "PhysBone", "PhysBone collider", "Gesture Manager", "Lyuma AV3 OSC", "AudioLink family", "Missing script" };
+        private static readonly Dictionary<Texture2D, int> TintIndices = new Dictionary<Texture2D, int>();
         private static readonly Dictionary<Texture2D, Texture2D> Tinted = new Dictionary<Texture2D, Texture2D>();
         private static readonly HashSet<Texture2D> BundledArtwork = new HashSet<Texture2D>();
         private static readonly Dictionary<string, string> Associations = new Dictionary<string, string>(StringComparer.Ordinal)
@@ -38,6 +42,7 @@ namespace HierarchyDecorator
             EditorApplication.projectChanged += Refresh;
             AssemblyReloadEvents.beforeAssemblyReload += ReleaseTextures;
             EditorApplication.quitting += ReleaseTextures;
+            Undo.undoRedoPerformed += Refresh;
         }
 
         private static void ReleaseTextures()
@@ -46,6 +51,7 @@ namespace HierarchyDecorator
                 if (texture != null) UnityEngine.Object.DestroyImmediate(texture);
             Tinted.Clear();
             BundledArtwork.Clear();
+            TintIndices.Clear();
         }
 
         [MenuItem("Tools/HierarchyDecorator/Refresh Custom Icons")]
@@ -79,11 +85,14 @@ namespace HierarchyDecorator
             if (Tinted.TryGetValue(icon, out var tinted)) return tinted;
             // Only our bundled white artwork is tinted. User overrides and SDK icons retain their colours.
             var pixels = icon.GetPixels();
-            var tint = new Color(96f / 255f, 218f / 255f, 230f / 255f, 1f);
+            var colors = HierarchyDecorator.Settings.Components.icons8Tints;
+            var index = TintIndices[icon];
+            var tint = colors != null && index < colors.Length ? colors[index] : DefaultTint;
+            tint.a = 1f; // Colour controls never change artwork opacity.
             for (int i = 0; i < pixels.Length; i++) pixels[i] *= tint;
             tinted = new Texture2D(icon.width, icon.height, TextureFormat.RGBA32, false)
             {
-                name = icon.name + " #60dae6", hideFlags = HideFlags.HideAndDontSave,
+                name = icon.name + " #" + ColorUtility.ToHtmlStringRGB(tint).ToLowerInvariant(), hideFlags = HideFlags.HideAndDontSave,
                 filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp
             };
             tinted.SetPixels(pixels);
@@ -109,6 +118,8 @@ namespace HierarchyDecorator
                         Icons[association.Key] = source;
                         BundledArtwork.Add(source);
                     }
+                for (int i = 0; i < TintComponents.Length; i++)
+                    if (Icons.TryGetValue(TintComponents[i], out var source)) TintIndices[source] = i;
             }
             // Project-local artwork overrides bundled filenames and survives updates.
             LoadFolder("Assets/HierarchyDecorator/CustomIcons");
