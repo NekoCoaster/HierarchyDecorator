@@ -8,16 +8,28 @@ Source: downloaded directly from Icons8 by the maintainer under activated projec
 access, then edited by the maintainer. PNGs retain the supplied white artwork;
 HierarchyDecorator applies #60dae6 to in-memory copies at display time.
 
-Included files:
+Included files and original Icons8 source pages (provided by the maintainer):
 icons8-bone-48.png
+  https://icons8.com/icon/jDsGJk0jgfW1/dog-bone
 icons8-code-file-48.png
+  https://icons8.com/icon/L0mUlBM2WfDZ/code-file
 icons8-ethernet-settings-50.png
+  https://icons8.com/icon/50813/ethernet-settings
 icons8-external-48.png
+  https://icons8.com/icon/m7oKboJOvI9r/external
 icons8-identification-documents-50.png
+  https://icons8.com/icon/23187/identification-documents
 icons8-inscription-48.png
+  https://icons8.com/icon/DL0NqSKYGFwn/inscription
 icons8-internal-48.png
+  https://icons8.com/icon/G15erjTrnvFS/internal
 icons8-itunes-note-32.png
+  https://icons8.com/icon/1QjKSlRgN3-W/itunes-note
 icons8-profile-50.png
+  https://icons8.com/icon/7821/profile
 icons8-questions-48.png
+  https://icons8.com/icon/1GC1nqLYapGs/questions
 icons8-sphere-48.png
+  https://icons8.com/icon/5BLfXpPmCu2w/sphere
 icons8-stop-gesture-48.png
+  https://icons8.com/icon/GkHu3RgGbQAT/stop-gesture
