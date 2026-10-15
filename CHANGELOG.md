@@ -1,4 +1,4 @@
-## Unreleased
+## 0.13.2 - 2026-10-15
 
 - Add per-artwork Icons8 tint controls with previews, Reset, persistence and Undo. Move the VRC icon checkbox outside the hue foldout and place its checkbox on the left.
 
