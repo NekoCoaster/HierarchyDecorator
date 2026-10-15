@@ -22,8 +22,11 @@ namespace HierarchyDecorator
         {
             if (type == null) return fallback;
             if (Icons.TryGetValue(type, out var cached)) return cached != null ? cached : fallback;
-            Texture icon = null;
-            for (var current = type; current != null; current = current.BaseType)
+            // Explicit associations (e.g. AudioLink) take precedence over the generic U# family fallback.
+            Texture icon = type.FullName == "VRC.Udon.UdonBehaviour"
+                ? Resources.Load<Texture2D>("UdonSharpProgramAsset icon") : null;
+            if (icon == null) icon = CustomComponentIcons.Find(type.FullName) ?? CustomComponentIcons.Find(type.Name);
+            for (var current = type; icon == null && current != null; current = current.BaseType)
             {
                 if (current.FullName == "VRC.Udon.UdonBehaviour" || current.FullName == "UdonSharp.UdonSharpBehaviour")
                 {
@@ -31,13 +34,11 @@ namespace HierarchyDecorator
                     break;
                 }
             }
-            // Keep U# ahead of the imported UdonBehaviour association.
-            if (icon == null) icon = CustomComponentIcons.Find(type.FullName) ?? CustomComponentIcons.Find(type.Name);
             if (icon == null)
                 for (var current = type; current != null; current = current.BaseType)
                     if (current.FullName == "VF.Component.VRCFuryComponent")
                     {
-                        icon = AssetDatabase.LoadAssetAtPath<Texture2D>(
+                        icon = CustomComponentIcons.Find("VRCFury") ?? AssetDatabase.LoadAssetAtPath<Texture2D>(
                             "Packages/com.vrcfury.vrcfury/VrcfResources/logo.png");
                         break;
                     }

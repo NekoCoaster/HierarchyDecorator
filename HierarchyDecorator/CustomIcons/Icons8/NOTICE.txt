@@ -1,0 +1,23 @@
+Icons by Icons8 - https://icons8.com
+
+Reusing Icons8 icons requires an active Icons8 license.
+The MIT licence for HierarchyDecorator code does not cover these images.
+These images are included for this project under its Icons8 open-source licence.
+
+Source: downloaded directly from Icons8 by the maintainer under activated project
+access, then edited by the maintainer. PNGs retain the supplied white artwork;
+HierarchyDecorator applies #60dae6 to in-memory copies at display time.
+
+Included files:
+icons8-bone-48.png
+icons8-code-file-48.png
+icons8-ethernet-settings-50.png
+icons8-external-48.png
+icons8-identification-documents-50.png
+icons8-inscription-48.png
+icons8-internal-48.png
+icons8-itunes-note-32.png
+icons8-profile-50.png
+icons8-questions-48.png
+icons8-sphere-48.png
+icons8-stop-gesture-48.png

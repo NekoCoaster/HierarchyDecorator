@@ -278,6 +278,11 @@ namespace HierarchyDecorator
         protected override void OnContentGUI()
         {
             DrawConstraintHues();
+            EditorGUILayout.BeginHorizontal();
+            EditorGUILayout.LabelField("Bundled artwork: Icons8", GUILayout.Width(170));
+            if (GUILayout.Button("Visit Icons8", EditorStyles.miniButton)) Application.OpenURL("https://icons8.com");
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.LabelField("Reusing Icons8 icons requires an active Icons8 license.", EditorStyles.wordWrappedMiniLabel);
             // Draw Content 
 
             HierarchyGUI.Space();
@@ -296,13 +301,13 @@ namespace HierarchyDecorator
 
         private void DrawConstraintHues()
         {
-            showConstraintHues = EditorGUILayout.Foldout(showConstraintHues, "Constraint icon hue shifts", true);
+            showConstraintHues = EditorGUILayout.Foldout(showConstraintHues, "VRC constraint icon hue shifts", true);
             if (!showConstraintHues) return;
             var enabled = serializedTab.FindPropertyRelative("constraintHueEnabled");
             var hues = serializedTab.FindPropertyRelative("constraintHueShifts");
             if (hues.arraySize != ConstraintIconHues.Names.Length) hues.arraySize = ConstraintIconHues.Names.Length;
-            EditorGUILayout.PropertyField(enabled, new GUIContent("Use Unity constraint icons"));
-            EditorGUILayout.HelpBox("Applies to Unity and VRC constraints in the hierarchy. Hue shifts preserve saturation, brightness and alpha; grey pixels stay grey. Left: original. Right: preview. Zero restores the original hue.", MessageType.Info);
+            EditorGUILayout.PropertyField(enabled, new GUIContent("Use Unity icons for VRC constraints"));
+            EditorGUILayout.HelpBox("Applies only to VRC constraints. Native Unity constraints retain their original colours. Hue shifts preserve saturation, brightness and alpha; grey pixels stay grey. Left: original. Right: preview.", MessageType.Info);
             using (new EditorGUI.DisabledScope(!enabled.boolValue))
             {
                 for (int i = 0; i < ConstraintIconHues.Names.Length; i++)

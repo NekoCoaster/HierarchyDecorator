@@ -1,0 +1,10 @@
+VRCF artwork - VRCFury / Senky
+Source: https://github.com/VRCFury/vrcfury.com/blob/main/static/img/vrcf.png
+Official website: https://vrcfury.com/
+Included unchanged; no Icons8 tint is applied.
+
+This artwork is not covered by HierarchyDecorator's MIT licence or Icons8's licence.
+VRCFury's full package licence is preserved in VRCFury-LICENSE.txt. It provides
+separate personal and commercial terms, including redistribution restrictions.
+The website repository does not publish an explicit licence for this image;
+coverage by the package licence has not been independently confirmed.

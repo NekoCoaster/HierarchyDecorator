@@ -1,6 +1,9 @@
 ## Unreleased
 
-- Add per-type constraint icon hue shifts with live original/modified previews, reset, and saved settings. Unity and VRC constraints use Unity's built-in icons, with generated copies cached in memory.
+- Bundle the selected Icons8 component artwork with #60dae6 tint, explicit AudioLink mappings, attribution, and separate artwork terms. Dropped integrations use normal/default icons.
+- Use the official orange VRCF website artwork for VRCFury components, retaining its source notice and separate upstream licence.
+
+- Add per-type constraint icon hue shifts with live original/modified previews, reset, and saved settings. VRC constraints use Unity's built-in icons; native Unity constraints remain unchanged, with generated copies cached in memory.
 
 ## 0.13.0 - Neko's Fork
 

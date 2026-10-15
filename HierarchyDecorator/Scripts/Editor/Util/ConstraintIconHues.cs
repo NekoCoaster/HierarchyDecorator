@@ -43,12 +43,20 @@ namespace HierarchyDecorator
         internal static GUIContent Resolve(Type type, GUIContent original, ComponentData settings)
         {
             if (!settings.constraintHueEnabled) return original;
+            if (!IsVrcConstraint(type)) return original;
             int index = Index(type);
             if (index < 0) return original;
             float hue = settings.constraintHueShifts != null && index < settings.constraintHueShifts.Length
                 ? settings.constraintHueShifts[index] : 0f;
             var image = Get(index, hue);
             return image == null ? original : new GUIContent(original.text, image, original.tooltip);
+        }
+
+        private static bool IsVrcConstraint(Type type)
+        {
+            for (; type != null; type = type.BaseType)
+                if (type.Namespace == "VRC.SDK3.Dynamics.Constraint.Components" && Index(type) >= 0) return true;
+            return false;
         }
 
         internal static Texture Get(int index, float degrees)
