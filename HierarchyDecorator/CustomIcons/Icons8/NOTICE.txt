@@ -11,8 +11,6 @@ HierarchyDecorator applies #60dae6 to in-memory copies at display time.
 Included files and original Icons8 source pages (provided by the maintainer):
 icons8-bone-48.png
   https://icons8.com/icon/jDsGJk0jgfW1/dog-bone
-icons8-code-file-48.png
-  https://icons8.com/icon/L0mUlBM2WfDZ/code-file
 icons8-ethernet-settings-50.png
   https://icons8.com/icon/50813/ethernet-settings
 icons8-external-48.png

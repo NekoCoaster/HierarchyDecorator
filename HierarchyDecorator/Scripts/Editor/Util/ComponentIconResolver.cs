@@ -26,6 +26,7 @@ namespace HierarchyDecorator
             Texture icon = type.FullName == "VRC.Udon.UdonBehaviour"
                 ? Resources.Load<Texture2D>("UdonSharpProgramAsset icon") : null;
             if (icon == null) icon = CustomComponentIcons.Find(type.FullName) ?? CustomComponentIcons.Find(type.Name);
+            if (icon == null) icon = ResolveDismayIcon(type, script);
             for (var current = type; icon == null && current != null; current = current.BaseType)
             {
                 if (current.FullName == "VRC.Udon.UdonBehaviour" || current.FullName == "UdonSharp.UdonSharpBehaviour")
@@ -50,6 +51,33 @@ namespace HierarchyDecorator
                 icon = CustomComponentIcons.Find("Default") ?? icon;
             Icons[type] = icon;
             return icon != null ? icon : fallback;
+        }
+
+        private static Texture ResolveDismayIcon(Type type, MonoScript script)
+        {
+            if (!typeof(MonoBehaviour).IsAssignableFrom(type)) return null;
+            const string pcs = "Assets/!Dismay Custom/Penetration Contact System/";
+            const string lms = "Assets/!Dismay Custom/Lovestick Massages SFX/";
+            string folder = null;
+            for (var current = type; current != null; current = current.BaseType)
+            {
+                if (current.FullName == "DismayCustom.PCS.PCSComponentBase") { folder = pcs; break; }
+                // LMS has no runtime component yet: restrict provisional matching to vendor namespaces.
+                if (InNamespace(current, "DismayCustom.LMS") || InNamespace(current, "DMCustom.LMS")) { folder = lms; break; }
+            }
+            if (folder == null && script != null)
+            {
+                var path = AssetDatabase.GetAssetPath(script);
+                if (path.StartsWith(pcs, StringComparison.Ordinal)) folder = pcs;
+                else if (path.StartsWith(lms, StringComparison.Ordinal)) folder = lms;
+            }
+            if (folder == null) return null;
+            return AssetDatabase.LoadAssetAtPath<Texture2D>(folder + "Assets/Icons/" + (folder == pcs ? "PCS" : "LMS") + " Icon.png");
+        }
+
+        private static bool InNamespace(Type type, string name)
+        {
+            return type.Namespace == name || (type.Namespace != null && type.Namespace.StartsWith(name + ".", StringComparison.Ordinal));
         }
 
         private static bool IsGeneric(Texture texture)

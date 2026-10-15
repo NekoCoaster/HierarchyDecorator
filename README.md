@@ -33,7 +33,7 @@ Open **Edit → Preferences → Hierarchy Decorator → Icons** and expand
 **VRC constraint icon hue shifts**. Each of the six constraint types has a hue slider
 in degrees, an original/modified preview, and a **Reset** button. Changes appear
 immediately in the hierarchy and are saved with the settings; Undo is supported.
-All shifts start at zero. Disable **Use Unity icons for VRC constraints** to return to the
+New settings start at -130 degrees for all six VRC constraint types. Existing saved values are preserved. Reset sets an individual shift to zero. Disable **Use Unity icons for VRC constraints** to return to the
 normal component/custom-icon resolution.
 
 VRC constraints use the corresponding Unity built-in icon; native Unity constraints
@@ -47,12 +47,13 @@ Place your own licensed textures in `Assets/HierarchyDecorator/CustomIcons/`.
 Name each image after the component class, such as `AudioLink.png`, `GestureManager.png`,
 or `VRCPhysBone.png`. A fully qualified class name can disambiguate matching names.
 Subfolders are supported. Project icons override matching bundled filenames.
-`Default.png` replaces generic script icons; `Missing.png` represents missing scripts.
+Generic script icons are unchanged by default. An explicitly supplied project-local
+`Default.png` can replace generic script icons; `Missing.png` represents missing scripts.
 The SDK U# icon takes precedence for Udon Behaviour. Explicit mappings such as
 AudioLink take precedence over the generic UdonSharp base-class fallback.
 Icons refresh after project changes, or through **Tools → HierarchyDecorator → Refresh Custom Icons**.
 
-The bundle contains 12 user-edited white Icons8 images. In-memory copies receive
+The bundle contains 11 user-edited white Icons8 images. In-memory copies receive
 `#60dae6` tint, preserving alpha. SDK U# icons, VRCFury icons, Unity icons and
 project-local overrides retain their original colours.
 
@@ -66,7 +67,7 @@ project-local overrides retain their original colours.
 | GestureManager | stop-gesture |
 | LyumaAv3Osc | ethernet-settings |
 | AudioLink, AudioLinkController, AudioLinkControllerV0, AudioLinkZone | itunes-note |
-| Missing script / generic script fallback | questions / code-file |
+| Missing script | questions |
 
 QvPen, LTCGI, LyumaAv3Runtime, LyumaAv3Emulator, LyumaAv3Menu and
 GestureManagerAv3Menu have no bundled special mappings; normal/default icons still
@@ -82,6 +83,20 @@ does not cover this artwork. Project access was confirmed by Icons8; the images
 were supplied from the maintainer's direct downloads and edited by the maintainer.
 See `HierarchyDecorator/CustomIcons/Icons8/NOTICE.txt`. The same clickable credit
 and disclaimer appear in the Icons preferences and the Icon Artwork Credits menu.
+
+## PCS and provisional LMS support
+
+PCS components derived from `DismayCustom.PCS.PCSComponentBase` use the installed
+`Assets/!Dismay Custom/Penetration Contact System/Assets/Icons/PCS Icon.png`.
+Future LMS components in `DismayCustom.LMS` or `DMCustom.LMS` (including nested
+namespaces and derived components) use
+`Assets/!Dismay Custom/Lovestick Massages SFX/Assets/Icons/LMS Icon.png`.
+MonoBehaviour scripts located under either installation folder are also recognized.
+LMS currently has editor tooling, not a released runtime component, so its runtime
+matching is provisional. No broad PCS/LMS name-prefix matching is used.
+
+These icons are loaded locally without tint or redistribution. Missing icons use
+normal resolution, and explicit custom icon overrides take precedence.
 
 ## Publishing updates
 

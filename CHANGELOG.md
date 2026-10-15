@@ -1,3 +1,9 @@
+## Unreleased
+
+- Default new VRC constraint hue settings to -130 degrees, preserving existing settings.
+- Keep the generic Unity script icon unless a project explicitly supplies a custom Default icon.
+- Load PCS and provisional LMS component icons from their local installations without tinting or bundling vendor artwork.
+
 ## 0.13.1 - 2026-10-15
 
 - Bundle the selected Icons8 component artwork with #60dae6 tint, explicit AudioLink mappings, attribution, and separate artwork terms. Dropped integrations use normal/default icons.
