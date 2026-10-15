@@ -13,16 +13,47 @@ namespace HierarchyDecorator
         private static readonly Dictionary<string, Texture2D> Icons =
             new Dictionary<string, Texture2D>(StringComparer.Ordinal);
         private static bool loaded;
+        private static readonly Dictionary<Texture2D, Texture2D> Tinted = new Dictionary<Texture2D, Texture2D>();
+        private static readonly HashSet<Texture2D> BundledArtwork = new HashSet<Texture2D>();
+        private static readonly Dictionary<string, string> Associations = new Dictionary<string, string>(StringComparer.Ordinal)
+        {
+            { "VRCSceneDescriptor", "icons8-inscription-48" },
+            { "VRCContactSender", "icons8-external-48" },
+            { "VRCContactReceiver", "icons8-internal-48" },
+            { "VRCAvatarDescriptor", "icons8-profile-50" },
+            { "PipelineManager", "icons8-identification-documents-50" },
+            { "VRCPhysBone", "icons8-bone-48" },
+            { "VRCPhysBoneCollider", "icons8-sphere-48" },
+            { "GestureManager", "icons8-stop-gesture-48" },
+            { "LyumaAv3Osc", "icons8-ethernet-settings-50" },
+            { "AudioLink", "icons8-itunes-note-32" },
+            { "AudioLinkController", "icons8-itunes-note-32" },
+            { "AudioLinkControllerV0", "icons8-itunes-note-32" },
+            { "AudioLinkZone", "icons8-itunes-note-32" },
+            { "Missing", "icons8-questions-48" },
+            { "Default", "icons8-code-file-48" }
+        };
 
         static CustomComponentIcons()
         {
             EditorApplication.projectChanged += Refresh;
+            AssemblyReloadEvents.beforeAssemblyReload += ReleaseTextures;
+            EditorApplication.quitting += ReleaseTextures;
+        }
+
+        private static void ReleaseTextures()
+        {
+            foreach (var texture in Tinted.Values)
+                if (texture != null) UnityEngine.Object.DestroyImmediate(texture);
+            Tinted.Clear();
+            BundledArtwork.Clear();
         }
 
         [MenuItem("Tools/HierarchyDecorator/Refresh Custom Icons")]
         internal static void Refresh()
         {
             loaded = false;
+            ReleaseTextures();
             Icons.Clear();
             ComponentIconResolver.ClearCache();
             EditorApplication.RepaintHierarchyWindow();
@@ -32,7 +63,7 @@ namespace HierarchyDecorator
         private static void ShowArtworkCredits()
         {
             if (EditorUtility.DisplayDialog("Icon Artwork Credits",
-                "Icons8 artwork, when installed: https://icons8.com\n\n" +
+                "Icons by Icons8: https://icons8.com\n\n" +
                 "Reusing Icons8 icons requires an active Icons8 license. " +
                 "The MIT license for HierarchyDecorator code does not cover Icons8 artwork.\n\n" +
                 "Other project-supplied icons retain their respective licenses.",
@@ -44,7 +75,22 @@ namespace HierarchyDecorator
         {
             if (string.IsNullOrEmpty(componentName)) return null;
             if (!loaded) Load();
-            return Icons.TryGetValue(componentName, out var icon) ? icon : null;
+            if (!Icons.TryGetValue(componentName, out var icon)) return null;
+            if (!BundledArtwork.Contains(icon)) return icon;
+            if (Tinted.TryGetValue(icon, out var tinted)) return tinted;
+            // Only our bundled white artwork is tinted. User overrides and SDK icons retain their colours.
+            var pixels = icon.GetPixels();
+            var tint = new Color(96f / 255f, 218f / 255f, 230f / 255f, 1f);
+            for (int i = 0; i < pixels.Length; i++) pixels[i] *= tint;
+            tinted = new Texture2D(icon.width, icon.height, TextureFormat.RGBA32, false)
+            {
+                name = icon.name + " #60dae6", hideFlags = HideFlags.HideAndDontSave,
+                filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp
+            };
+            tinted.SetPixels(pixels);
+            tinted.Apply();
+            Tinted[icon] = tinted;
+            return tinted;
         }
 
         private static void Load()
@@ -58,6 +104,12 @@ namespace HierarchyDecorator
                 var root = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(
                     Path.GetDirectoryName(scriptPath))));
                 LoadFolder((root + "/CustomIcons").Replace('\\', '/'));
+                foreach (var association in Associations)
+                    if (Icons.TryGetValue(association.Value, out var source))
+                    {
+                        Icons[association.Key] = source;
+                        BundledArtwork.Add(source);
+                    }
             }
             // Project-local artwork overrides bundled filenames and survives updates.
             LoadFolder("Assets/HierarchyDecorator/CustomIcons");

@@ -1,3 +1,10 @@
+## Unreleased
+
+- Bundle the selected Icons8 component artwork with #60dae6 tint, explicit AudioLink mappings, attribution, and separate artwork terms. Dropped integrations use normal/default icons.
+- Use the official orange VRCF website artwork for VRCFury components, retaining its source notice and separate upstream licence.
+
+- Add per-type constraint icon hue shifts with live original/modified previews, reset, and saved settings. VRC constraints use Unity's built-in icons; native Unity constraints remain unchanged, with generated copies cached in memory.
+
 ## 0.13.0 - Neko's Fork
 
 - Use `===`, `---`, and `+++` as the default header prefixes. A one-time migration upgrades original built-in prefixes in saved settings while preserving custom and regex styles and visual settings.

@@ -27,28 +27,61 @@ the prefixes afterward under **Edit → Preferences → Hierarchy Decorator → 
 Existing single-prefix header GameObjects must be renamed to use the new prefixes;
 the upgrade does not rename scene objects.
 
+## Constraint icon hue shifts
+
+Open **Edit → Preferences → Hierarchy Decorator → Icons** and expand
+**VRC constraint icon hue shifts**. Each of the six constraint types has a hue slider
+in degrees, an original/modified preview, and a **Reset** button. Changes appear
+immediately in the hierarchy and are saved with the settings; Undo is supported.
+All shifts start at zero. Disable **Use Unity icons for VRC constraints** to return to the
+normal component/custom-icon resolution.
+
+VRC constraints use the corresponding Unity built-in icon; native Unity constraints
+keep their original icons and colours. HSV hue rotation preserves saturation, brightness and transparency, so grey
+pixels stay grey. Generated textures are cached in memory; no Unity artwork is
+exported or bundled. Icons8 files in the local editing workspace are unaffected.
+
 ## Custom component icons
 
 Place your own licensed textures in `Assets/HierarchyDecorator/CustomIcons/`.
-Name each image after the component class, such as `AudioLink.png`, `LTCGI_Screen.png`,
+Name each image after the component class, such as `AudioLink.png`, `GestureManager.png`,
 or `VRCPhysBone.png`. A fully qualified class name can disambiguate matching names.
 Subfolders are supported. Project icons override matching bundled filenames.
 `Default.png` replaces generic script icons; `Missing.png` represents missing scripts.
-The U# icon still takes precedence for Udon and UdonSharp behaviours when available.
+The SDK U# icon takes precedence for Udon Behaviour. Explicit mappings such as
+AudioLink take precedence over the generic UdonSharp base-class fallback.
 Icons refresh after project changes, or through **Tools → HierarchyDecorator → Refresh Custom Icons**.
 
-The public package currently includes the MIT-licensed icon loader, without
-HierarchyPlus artwork. Separately supplied artwork retains its own terms.
+The bundle contains 12 user-edited white Icons8 images. In-memory copies receive
+`#60dae6` tint, preserving alpha. SDK U# icons, VRCFury icons, Unity icons and
+project-local overrides retain their original colours.
 
-**Icons8 artwork attribution:** Icons by [Icons8](https://icons8.com), when installed.
-**Reusing Icons8 icons requires an active Icons8 license.** The MIT license for
-HierarchyDecorator code does not cover Icons8 artwork. The same credit and link
-are available through **Tools → HierarchyDecorator → Icon Artwork Credits**.
+| Component | Artwork |
+| --- | --- |
+| VRCSceneDescriptor | inscription |
+| VRCContactSender / VRCContactReceiver | external / internal |
+| VRCAvatarDescriptor | profile |
+| PipelineManager | identification-documents |
+| VRCPhysBone / VRCPhysBoneCollider | bone / sphere |
+| GestureManager | stop-gesture |
+| LyumaAv3Osc | ethernet-settings |
+| AudioLink, AudioLinkController, AudioLinkControllerV0, AudioLinkZone | itunes-note |
+| Missing script / generic script fallback | questions / code-file |
 
-Icons8 support has asked us to wait for the team's final confirmation before
-publishing artwork in the repository or installation ZIPs. The open-source
-application and account/download setup are pending. Once approved, artwork for
-the public bundle will be sourced directly from Icons8 under the finalized terms.
+QvPen, LTCGI, LyumaAv3Runtime, LyumaAv3Emulator, LyumaAv3Menu and
+GestureManagerAv3Menu have no bundled special mappings; normal/default icons still
+apply. The rig-bone attachment marker is independent of the PhysBone icon.
+VRCFury components use the unchanged orange VRCF artwork from the official
+website. It is separate from the MIT code and Icons8 artwork; see
+`HierarchyDecorator/CustomIcons/VRCFury/NOTICE.txt` and the preserved VRCFury
+licence for its source and licensing caveat.
+
+**Icons by [Icons8](https://icons8.com).**
+**Reusing Icons8 icons requires an active Icons8 license.** The MIT code licence
+does not cover this artwork. Project access was confirmed by Icons8; the images
+were supplied from the maintainer's direct downloads and edited by the maintainer.
+See `HierarchyDecorator/CustomIcons/Icons8/NOTICE.txt`. The same clickable credit
+and disclaimer appear in the Icons preferences and the Icon Artwork Credits menu.
 
 ## Publishing updates
 

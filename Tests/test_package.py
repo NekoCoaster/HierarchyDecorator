@@ -21,6 +21,12 @@ class PackageTests(unittest.TestCase):
                 manifest = json.loads(package.read("package.json"))
                 self.assertEqual(manifest["displayName"], "HierarchyDecorator - Neko's Fork")
                 self.assertIn("LICENSE.md", package.namelist())
+                artwork = [n for n in package.namelist() if n.startswith('HierarchyDecorator/CustomIcons/Icons8/') and n.endswith('.png')]
+                self.assertEqual(len(artwork), 12)
+                self.assertFalse(any('gps-antenna' in n or 'wrecking-ball' in n or 'rfid-signal' in n or 'crash-50' in n for n in artwork))
+                self.assertIn('HierarchyDecorator/CustomIcons/Icons8/NOTICE.txt', package.namelist())
+                self.assertIn('HierarchyDecorator/CustomIcons/VRCFury/VRCFury-LICENSE.txt', package.namelist())
+                self.assertFalse(any(n.startswith(('CustomIcons/', 'Tests~/')) for n in package.namelist()))
                 self.assertFalse(any(n.startswith((".git", "Tests/", "Tools/")) for n in package.namelist()))
                 for name in package.namelist():
                     if name.endswith(".cs"):
