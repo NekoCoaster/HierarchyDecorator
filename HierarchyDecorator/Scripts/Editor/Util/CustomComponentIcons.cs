@@ -30,8 +30,7 @@ namespace HierarchyDecorator
             { "AudioLinkController", "icons8-itunes-note-32" },
             { "AudioLinkControllerV0", "icons8-itunes-note-32" },
             { "AudioLinkZone", "icons8-itunes-note-32" },
-            { "Missing", "icons8-questions-48" },
-            { "Default", "icons8-code-file-48" }
+            { "Missing", "icons8-questions-48" }
         };
 
         static CustomComponentIcons()

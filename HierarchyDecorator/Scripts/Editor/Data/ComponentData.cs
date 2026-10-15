@@ -68,7 +68,7 @@ namespace HierarchyDecorator
         [SerializeField] private bool stackDuplicateIcons;
         [SerializeField] private bool showBoneIcons = true;
         public bool constraintHueEnabled = true;
-        public float[] constraintHueShifts = new float[6];
+        public float[] constraintHueShifts = { -130f, -130f, -130f, -130f, -130f, -130f };
 
         [SerializeField] private ComponentGroup[] unityGroups = new ComponentGroup[0];
 

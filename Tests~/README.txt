@@ -16,3 +16,11 @@ IconAssignmentsValidation.Run checks bundled mappings, dropped mappings, exact
 #60dae6 tint and alpha, original VRCFury colours, VRC-only hue shifts, explicit
 AudioLink priority over UdonSharp fallback, and generated-texture cleanup. Copy
 Editor/IconAssignmentsValidation.cs into the same disposable project to run it.
+DismayIconsValidation.Run checks first-install hue defaults, preservation of saved
+values, generic script fallback, PCS inheritance, provisional LMS namespaces,
+installation-folder matching, missing icons, and cache invalidation. Copy its
+Editor script into the disposable project. Before compiling, create
+Assets/!Dismay Custom/Lovestick Massages SFX/Scripts/Runtime/DismayFolderFixture.cs
+with: public class DismayFolderFixture : UnityEngine.MonoBehaviour {}
+The test creates synthetic PCS/LMS PNGs only when those paths are absent and
+removes them afterward. Never run this fixture in a production project.
