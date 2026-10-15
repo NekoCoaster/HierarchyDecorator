@@ -69,6 +69,14 @@ namespace HierarchyDecorator
         [SerializeField] private bool showBoneIcons = true;
         public bool constraintHueEnabled = true;
         public float[] constraintHueShifts = { -130f, -130f, -130f, -130f, -130f, -130f };
+        public Color[] icons8Tints = CreateIconTints();
+
+        private static Color[] CreateIconTints()
+        {
+            var colors = new Color[11];
+            for (int i = 0; i < colors.Length; i++) colors[i] = new Color(96f / 255f, 218f / 255f, 230f / 255f, 1f);
+            return colors;
+        }
 
         [SerializeField] private ComponentGroup[] unityGroups = new ComponentGroup[0];
 

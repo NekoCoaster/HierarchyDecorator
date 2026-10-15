@@ -278,6 +278,7 @@ namespace HierarchyDecorator
         protected override void OnContentGUI()
         {
             DrawConstraintHues();
+            DrawIconTints();
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.LabelField("Bundled artwork: Icons8", GUILayout.Width(170));
             if (GUILayout.Button("Visit Icons8", EditorStyles.miniButton)) Application.OpenURL("https://icons8.com");
@@ -298,15 +299,44 @@ namespace HierarchyDecorator
         }
 
         private bool showConstraintHues;
+        private bool showIconTints;
+
+        private void DrawIconTints()
+        {
+            showIconTints = EditorGUILayout.Foldout(showIconTints, "Icons8 icon tints", true);
+            if (!showIconTints) return;
+            var colors = serializedTab.FindPropertyRelative("icons8Tints");
+            int previousCount = colors.arraySize;
+            if (previousCount < CustomComponentIcons.TintComponents.Length)
+            {
+                colors.arraySize = CustomComponentIcons.TintComponents.Length;
+                for (int i = previousCount; i < colors.arraySize; i++) colors.GetArrayElementAtIndex(i).colorValue = CustomComponentIcons.DefaultTint;
+            }
+            EditorGUI.BeginChangeCheck();
+            for (int i = 0; i < CustomComponentIcons.TintComponents.Length; i++)
+            {
+                EditorGUILayout.BeginHorizontal();
+                var color = colors.GetArrayElementAtIndex(i);
+                color.colorValue = EditorGUILayout.ColorField(new GUIContent(CustomComponentIcons.TintLabels[i]), color.colorValue, true, false, false);
+                GUILayout.Label(CustomComponentIcons.Find(CustomComponentIcons.TintComponents[i]), GUILayout.Width(24), GUILayout.Height(24));
+                if (GUILayout.Button("Reset", GUILayout.Width(48))) color.colorValue = CustomComponentIcons.DefaultTint;
+                EditorGUILayout.EndHorizontal();
+            }
+            if (EditorGUI.EndChangeCheck())
+            {
+                serializedSettings.ApplyModifiedProperties();
+                CustomComponentIcons.Refresh();
+            }
+        }
 
         private void DrawConstraintHues()
         {
+            var enabled = serializedTab.FindPropertyRelative("constraintHueEnabled");
+            enabled.boolValue = EditorGUILayout.ToggleLeft("Use Unity icons for VRC constraints", enabled.boolValue);
             showConstraintHues = EditorGUILayout.Foldout(showConstraintHues, "VRC constraint icon hue shifts", true);
             if (!showConstraintHues) return;
-            var enabled = serializedTab.FindPropertyRelative("constraintHueEnabled");
             var hues = serializedTab.FindPropertyRelative("constraintHueShifts");
             if (hues.arraySize != ConstraintIconHues.Names.Length) hues.arraySize = ConstraintIconHues.Names.Length;
-            EditorGUILayout.PropertyField(enabled, new GUIContent("Use Unity icons for VRC constraints"));
             EditorGUILayout.HelpBox("Applies only to VRC constraints. Native Unity constraints retain their original colours. Hue shifts preserve saturation, brightness and alpha; grey pixels stay grey. Left: original. Right: preview.", MessageType.Info);
             using (new EditorGUI.DisabledScope(!enabled.boolValue))
             {

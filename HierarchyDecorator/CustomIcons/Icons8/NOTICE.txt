@@ -6,7 +6,7 @@ These images are included for this project under its Icons8 open-source licence.
 
 Source: downloaded directly from Icons8 by the maintainer under activated project
 access, then edited by the maintainer. PNGs retain the supplied white artwork;
-HierarchyDecorator applies #60dae6 to in-memory copies at display time.
+HierarchyDecorator applies a configurable per-icon tint (default #60dae6) to in-memory copies.
 
 Included files and original Icons8 source pages (provided by the maintainer):
 icons8-bone-48.png
